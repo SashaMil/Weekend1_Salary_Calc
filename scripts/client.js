@@ -28,6 +28,10 @@ function validateForm() {
     let newTableInput = new Employees(arrayOfInputValues[0], arrayOfInputValues[1], arrayOfInputValues[2], arrayOfInputValues[3], arrayOfInputValues[4]);
     console.log(newTableInput);
     $('.input').val('');
+    let outputString = '<tr>';
+    $(outputString += arrayOfInputValues.map(x => '<td>' + x + '</td>'));
+    outputString += '</tr>';
+    $('tbody').append(outputString);
   }
 
 
