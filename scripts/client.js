@@ -17,6 +17,9 @@ class Employees {
 }
 
 function handleSalary(num) {
+    if (num === 0 || NaN) {
+      return 0;
+    }
     num = num.toString();
     num = num.split("").filter(x => !isNaN(x));
     num.splice(num.length - 2, 0, '.');
@@ -30,6 +33,9 @@ function handleSalary(num) {
 }
 
 function extractSalaryValue(num) {
+  if (num === 0 || NaN) {
+    return 0;
+  }
   num = num.split("").filter(x => !isNaN(x));
   num.splice(num.length - 2, 0, '.');
   let fixedNumber = num.slice(0,num.length - 3).join("");
@@ -42,12 +48,13 @@ function calculateMonthlyTotal() {
   $('td.salary').each(function() {
     sum += extractSalaryValue($(this).text());
   })
-
-  // if (sum/12 > 20000) {
-  //   $('body').attr('background-color', red );
-  // }
+  console.log(sum);
+  console.log(sum/12);
   if ((sum/12)>20000) {
     $('#totalMonthly').css('background-color', 'red');
+  } else {
+    console.log('hello');
+    $('#totalMonthly').css('background-color', 'white');
   }
   return (sum/12);
 }
@@ -69,18 +76,22 @@ function validateForm() {
   } else {
     let newTableInput = new Employees(arrayOfInputValues[0], arrayOfInputValues[1], arrayOfInputValues[2], arrayOfInputValues[3], arrayOfInputValues[4]);
     $('.input').val('');
-    let outputString = '<tr id="'+tableEntry+'">"';
+    let outputString = '<tr class="'+tableEntry+'">"';
     outputString += '<td>' + arrayOfInputValues[0] + '</td>';
     outputString += '<td>' + arrayOfInputValues[1] + '</td>';
     outputString += '<td>' + arrayOfInputValues[2] + '</td>';
     outputString += '<td>' + arrayOfInputValues[3] + '<td>';
     outputString += '<td class="salary">' + arrayOfInputValues[4] + '<td>';
+    outputString += '<div><button class="editRow">Remove</button></div>'
     outputString += '</tr>';
     $('tbody').append(outputString);
-    $('tbody').append('<button id="tableEntry">Remove</button>')
-    $('#totalMonthly').html('Monthly Total: ' + handleSalary(Math.round(calculateMonthlyTotal() * 100) / 100));
+    $('#totalMonthly').html('Monthly Total: ' + handleSalary(Math.round(calculateMonthlyTotal() * 100)));
 
+    $('.editRow').click(function() {
+      $(this).parents('tr').first().remove();
+      $('#totalMonthly').html('Monthly Total: ' + handleSalary(Math.round(calculateMonthlyTotal() * 100)));
+    })
+};
 
 
   }
-}
