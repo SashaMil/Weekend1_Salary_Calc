@@ -48,12 +48,9 @@ function calculateMonthlyTotal() {
   $('td.salary').each(function() {
     sum += extractSalaryValue($(this).text());
   })
-  console.log(sum);
-  console.log(sum/12);
   if ((sum/12)>20000) {
     $('#totalMonthly').css('background-color', 'red');
   } else {
-    console.log('hello');
     $('#totalMonthly').css('background-color', 'white');
   }
   return (sum/12);
