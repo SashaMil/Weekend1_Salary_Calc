@@ -1,8 +1,9 @@
-console.log('JS');
 $(document).ready(readyNow);
 
 function readyNow() {
     $('#submitEmployee').on('click', validateForm);
+
+
 }
 
 class Employees {
@@ -15,24 +16,71 @@ class Employees {
   }
 }
 
+function handleSalary(num) {
+    num = num.toString();
+    num = num.split("").filter(x => !isNaN(x));
+    num.splice(num.length - 2, 0, '.');
+    let fixedNumber = num.slice(0,num.length - 3).join("");
+    fixedNumber = parseInt(fixedNumber);
+    let integerValue = fixedNumber;
+    fixedNumber = '$' + fixedNumber.toLocaleString();
+
+    fixedNumber += num.slice(num.length - 3, num.length).join("");
+    return fixedNumber;
+}
+
+function extractSalaryValue(num) {
+  num = num.split("").filter(x => !isNaN(x));
+  num.splice(num.length - 2, 0, '.');
+  let fixedNumber = num.slice(0,num.length - 3).join("");
+  fixedNumber = parseInt(fixedNumber);
+  return fixedNumber;
+}
+
+function calculateMonthlyTotal() {
+  let sum = 0;
+  $('td.salary').each(function() {
+    sum += extractSalaryValue($(this).text());
+  })
+
+  // if (sum/12 > 20000) {
+  //   $('body').attr('background-color', red );
+  // }
+  if ((sum/12)>20000) {
+    $('#totalMonthly').css('background-color', 'red');
+  }
+  return (sum/12);
+}
 
 
 
+let tableEntry = -1;
 function validateForm() {
+  tableEntry++;
   let arrayOfInputValues = [];
-  arrayOfInputValues.push($('#firstName').val(), $('#lastName').val(), $('#id').val(), $('#title').val(), $('#annualSalary').val());
+  let newSalary = handleSalary($('#annualSalary').val());
+  if (isNaN(extractSalaryValue($('#annualSalary').val()))) {
+    alert('ERROR: PLEASE INPUT INTEGER IN ANNUAL SALARY INPUT');
+  }
+  arrayOfInputValues.push($('#firstName').val(), $('#lastName').val(), $('#id').val(), $('#title').val(), newSalary);
   arrayOfInputValues = arrayOfInputValues.filter(x => x.length > 0);
   if (arrayOfInputValues.length < 5) {
     alert('ERROR: ALL INPUTS MUST BE FILLED IN');
   } else {
     let newTableInput = new Employees(arrayOfInputValues[0], arrayOfInputValues[1], arrayOfInputValues[2], arrayOfInputValues[3], arrayOfInputValues[4]);
-    console.log(newTableInput);
     $('.input').val('');
-    let outputString = '<tr>';
-    $(outputString += arrayOfInputValues.map(x => '<td>' + x + '</td>'));
+    let outputString = '<tr id="'+tableEntry+'">"';
+    outputString += '<td>' + arrayOfInputValues[0] + '</td>';
+    outputString += '<td>' + arrayOfInputValues[1] + '</td>';
+    outputString += '<td>' + arrayOfInputValues[2] + '</td>';
+    outputString += '<td>' + arrayOfInputValues[3] + '<td>';
+    outputString += '<td class="salary">' + arrayOfInputValues[4] + '<td>';
     outputString += '</tr>';
     $('tbody').append(outputString);
+    $('tbody').append('<button id="tableEntry">Remove</button>')
+    $('#totalMonthly').html('Monthly Total: ' + handleSalary(Math.round(calculateMonthlyTotal() * 100) / 100));
+
+
+
   }
-
-
 }

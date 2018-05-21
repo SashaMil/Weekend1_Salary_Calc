@@ -5,3 +5,39 @@
 input {
   margin-right: 10px;
 }
+
+body{
+  background-color: white
+}
+
+#totalMonthly {
+  text-align: right;
+  margin-right: 100px;
+  background-size: cover;
+  margin-left: 1110px;
+}
+
+
+#firstNameSection {
+  float: left;
+}
+
+#lastNameSection {
+  float: left;
+}
+
+#idSection {
+  float: left;
+}
+
+#title {
+  float: left;
+}
+
+#annualSalary {
+  float: left;
+}
+
+#submitSection {
+  float: right;
+}
