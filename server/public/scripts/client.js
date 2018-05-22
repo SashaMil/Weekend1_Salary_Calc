@@ -85,7 +85,7 @@ function validateForm() {
     $('#totalMonthly').html('Monthly Total: ' + handleSalary(Math.round(calculateMonthlyTotal() * 100)));
 
     $('.editRow').click(function() {
-      $(this).parents('tr').first().remove();
+      $(this).parents('tr').remove();
       $('#totalMonthly').html('Monthly Total: ' + handleSalary(Math.round(calculateMonthlyTotal() * 100)));
     })
 };
